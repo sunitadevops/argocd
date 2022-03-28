@@ -13,7 +13,7 @@ spec:
         app: myapp
     spec:
       containers:
-      - name: myapp
-        image: nanajanashia/argocd-app:1.2
+      - name: apache
+        image: httpd
         ports:
-        - containerPort: 8080
+        - containerPort: 80
