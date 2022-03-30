@@ -8,6 +8,6 @@ kubectl edit svc argocd-server -n argocd
 
 kubectl --namespace argocd logs --selector app.kubernetes.io/name=argocd-image-updater
 
-kubectl --namespace argocd create secret generic git-creds -- from-literal=username=satyamskic -- from-literal=password=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
+kubectl --namespace argocd create secret generic git-creds -- from-literal=username=satyamskic -- from-literal=password=ghp_TPAcmn9UpndgdfgvddncuC6GFFqEiJoLdfgdCnipsC0sdfsAktaz
 docker.io/satyam0786/red 
 argocd-image-updater test docker.io/satyam0786/red 
