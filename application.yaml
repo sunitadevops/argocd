@@ -3,11 +3,15 @@ kind: Application
 metadata:
   name: myapp-argo-application
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: docker.io/satyam0786/red                 #Write repository name
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds     #Setting git credential
+    argocd-image-updater.argoproj.io/git-branch: main                                   #git branch where your workflow exists
+    
 spec:
   project: default
-
   source:
-    repoURL: https://gitlab.com/nanuchi/argocd-app-config.git
+    repoURL: https://github.com/satyamskic/argocd.git
     targetRevision: HEAD
     path: dev
   destination: 
