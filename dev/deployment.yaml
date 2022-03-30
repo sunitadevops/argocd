@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: apache
-        image: satyam0786/red
+        image: satyam0786/argocd
         ports:
         - containerPort: 80
