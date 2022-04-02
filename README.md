@@ -32,9 +32,3 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 * ArgoCD Configuration: [https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/)
 
 
-FROM centos:latest
-MAINTAINER Hitesh
-RUN yum -y install httpd
-COPY index.html /var/www/html/
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
-EXPOSE 80
