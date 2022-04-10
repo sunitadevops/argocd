@@ -1,34 +1,44 @@
-# argocd
+Steps to install KIND Cluster:#####################
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.12.0/kind-linux-amd64
+chmod +x ./kind
+mv ./kind /bin/kind
 
-#### Commands
+Steps to install Kubectl ###########################
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+mv ./kubectl /bin/kubectl
 
-```bash
-# install ArgoCD in k8s
+yum install docker -y
+systemctl start docker
+systemctl enable docker
+
+
+kind create cluster
+#######Creating kind config###########
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+#########Apply kind config cmd############333
+kind create cluster --config config.yaml
+
+Step-1: Create git-creds
+kubectl --namespace argocd create secret generic git-creds --from-literal=username=satyamskic --from-literal=password=ghp_VS57GgNMCE9xxxxxxxxxxxxxxxxxx
+
+Step-2: Create namespace and Apply argocd pods
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl config set-context --current --namespace=argocd
 
-# access ArgoCD UI
-kubectl get svc -n argocd
-kubectl port-forward svc/argocd-server 8080:443 -n argocd
+Step-3:Expose service to NodePort
+kubectl edit svc argocd-server -n argocd
 
-# login with admin user and below token (as in documentation):
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 --decode && echo
+Step-4:Create image-updater pods
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
 
-# you can change and delete init password
+Step-5:Check logs
+kubectl --namespace argocd logs --selector app.kubernetes.io/name=argocd-image-updater --follow
 
-```
-</br>
-
-#### Links
-
-* Config repo: [https://gitlab.com/nanuchi/argocd-app-config](https://gitlab.com/nanuchi/argocd-app-config)
-
-* Docker repo: [https://hub.docker.com/repository/docker/nanajanashia/argocd-app](https://hub.docker.com/repository/docker/nanajanashia/argocd-app)
-
-* Install ArgoCD: [https://argo-cd.readthedocs.io/en/stable/getting_started/#1-install-argo-cd](https://argo-cd.readthedocs.io/en/stable/getting_started/#1-install-argo-cd)
-
-* Login to ArgoCD: [https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli](https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)
-
-* ArgoCD Configuration: [https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/)
-
-
+kubectl -n argocd rollout restart deployment argocd-image-updater
