@@ -3,11 +3,11 @@ kind: Application
 metadata:
   name: myapp-argo-application
   namespace: argocd
-#   annotations:
-#     argocd-image-updater.argoproj.io/image-list: myalias=docker.io/satyam0786/argocd           #Write repository name
-#     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds            #Setting git credential
-#     argocd-image-updater.argoproj.io/git-branch: main                                          #git branch where your workflow exists
-#     argocd-image-updater.argoproj.io/myalias.force-update: "true"
+   annotations:
+     argocd-image-updater.argoproj.io/image-list: myalias=docker.io/satyam0786/argocd           #Write repository name
+     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds            #Setting git credential
+     argocd-image-updater.argoproj.io/git-branch: main                                          #git branch where your workflow exists
+     argocd-image-updater.argoproj.io/myalias.force-update: "true"
 spec:
   project: default
   source:
